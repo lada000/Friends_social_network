@@ -1,0 +1,21 @@
+<h1>Edit Profile</h1>
+
+<%= form_for @user, url: profile_path, method: :patch do |f| %>
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+
+  <h2>Interests</h2>
+  <% @categories.each do |category| %>
+    <h3><%= category.name %></h3>
+    <% category.interests.each do |interest| %>
+      <div>
+        <%= check_box_tag 'user[interest_ids][]', interest.id, @user.interest_ids.include?(interest.id) %>
+        <%= label_tag "user_interest_ids_#{interest.id}", interest.name %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <%= f.submit 'Save Changes' %>
+<% end %>

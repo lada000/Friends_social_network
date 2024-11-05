@@ -1,0 +1,16 @@
+<h1>Profile</h1>
+
+<p><strong>Name:</strong> <%= @user.name %></p>
+<p><strong>Email:</strong> <%= @user.email %></p>
+<p><strong>Status:</strong> <%= @user.status ? "Online" : "Offline" %></p>
+
+<h2>Interests</h2>
+<ul>
+  <% @user.interests.each do |interest| %>
+    <li><%= interest.name %></li>
+  <% end %>
+</ul>
+
+<p><strong>Location:</strong> Latitude: <%= @user.latitude %>, Longitude: <%= @user.longitude %></p>
+
+<%= link_to 'Edit Profile', edit_profile_path %>
