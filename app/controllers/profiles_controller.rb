@@ -7,15 +7,20 @@ class ProfilesController < ApplicationController
 
   def edit
     @user = current_user
-    @categories = Category.includes(:interests) # Загружаем категории с интересами
+    @categories = Category.includes(:interests)
   end
 
   def update
     @user = current_user
-    if @user.update(user_params)
-      redirect_to profile_path, notice: 'Profile updated successfully.'
-    else
-      render :edit, alert: 'Error updating profile.'
+
+    respond_to do |format|
+      if @user.update(user_params)
+        format.html { redirect_to profile_path, notice: 'Profile updated successfully.' }
+        format.json { render json: { status: 'Location updated successfully' }, status: :ok }
+      else
+        format.html { render :show, alert: 'Error updating profile.' }
+        format.json { render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity }
+      end
     end
   end
 

@@ -4,6 +4,10 @@
 <p><strong>Email:</strong> <%= @user.email %></p>
 <p><strong>Status:</strong> <%= @user.status ? "Online" : "Offline" %></p>
 
+<h2>Location</h2>
+<p><strong>Latitude:</strong> <%= @user.latitude %></p>
+<p><strong>Longitude:</strong> <%= @user.longitude %></p>
+
 <h2>Interests</h2>
 <ul>
   <% @user.interests.each do |interest| %>
@@ -11,6 +15,40 @@
   <% end %>
 </ul>
 
-<p><strong>Location:</strong> Latitude: <%= @user.latitude %>, Longitude: <%= @user.longitude %></p>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+
+          console.log("Latitude:", latitude);
+          console.log("Longitude:", longitude);
+
+          fetch("<%= profile_path %>", {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-Token": "<%= form_authenticity_token %>"
+            },
+            body: JSON.stringify({ user: { latitude: latitude, longitude: longitude } })
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log("Location updated:", data);
+          })
+          .catch(error => console.error("Error updating location:", error));
+        },
+        function(error) {
+          console.error("Error getting location:", error);
+          alert("Error getting location: " + error.message);
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  });
+</script>
 
 <%= link_to 'Edit Profile', edit_profile_path %>

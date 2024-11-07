@@ -12,9 +12,6 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
 
-  geocoded_by :current_sign_in_ip 
-  after_validation :geocode, if: ->(obj) { obj.latitude.blank? && obj.longitude.blank? }
-
   after_update_commit -> { broadcast_replace_to "users" }
 
   def online!
