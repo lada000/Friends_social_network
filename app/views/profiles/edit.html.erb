@@ -6,15 +6,12 @@
     <%= f.text_field :name %>
   </div>
 
-  <h2>Interests</h2>
+  <h2>Select Categories (Choose at least 5)</h2>
   <% @categories.each do |category| %>
-    <h3><%= category.name %></h3>
-    <% category.interests.each do |interest| %>
-      <div>
-        <%= check_box_tag 'user[interest_ids][]', interest.id, @user.interest_ids.include?(interest.id) %>
-        <%= label_tag "user_interest_ids_#{interest.id}", interest.name %>
-      </div>
-    <% end %>
+    <div>
+      <%= check_box_tag 'user[category_ids][]', category.id, @user.category_ids.include?(category.id) %>
+      <%= label_tag "user_category_ids_#{category.id}", category.name %>
+    </div>
   <% end %>
 
   <%= f.submit 'Save Changes' %>

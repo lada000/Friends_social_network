@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_07_092426) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_07_144213) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,6 +18,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_07_092426) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "categories_users", id: false, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "category_id", null: false
+    t.index ["category_id"], name: "index_categories_users_on_category_id"
+    t.index ["user_id"], name: "index_categories_users_on_user_id"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -37,14 +44,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_07_092426) do
     t.datetime "updated_at", null: false
     t.index ["friend_id"], name: "index_friendships_on_friend_id"
     t.index ["user_id"], name: "index_friendships_on_user_id"
-  end
-
-  create_table "interests", force: :cascade do |t|
-    t.string "name"
-    t.bigint "category_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_interests_on_category_id"
   end
 
   create_table "interests_users", id: false, force: :cascade do |t|
@@ -82,6 +81,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_07_092426) do
   add_foreign_key "comments", "users"
   add_foreign_key "friendships", "users"
   add_foreign_key "friendships", "users", column: "friend_id"
-  add_foreign_key "interests", "categories"
   add_foreign_key "posts", "users"
 end

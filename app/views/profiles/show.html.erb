@@ -10,7 +10,7 @@
 
 <h2>Interests</h2>
 <ul>
-  <% @user.interests.each do |interest| %>
+  <% @user.categories.each do |interest| %>
     <li><%= interest.name %></li>
   <% end %>
 </ul>
@@ -52,3 +52,4 @@
 </script>
 
 <%= link_to 'Edit Profile', edit_profile_path %>
+<%= link_to 'Home', root_path %>

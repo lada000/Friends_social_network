@@ -7,7 +7,7 @@ class ProfilesController < ApplicationController
 
   def edit
     @user = current_user
-    @categories = Category.includes(:interests)
+    @categories = Category.all
   end
 
   def update
@@ -27,6 +27,6 @@ class ProfilesController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :latitude, :longitude, interest_ids: [])
+    params.require(:user).permit(:name, :latitude, :longitude, category_ids: [])
   end
 end

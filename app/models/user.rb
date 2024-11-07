@@ -4,7 +4,8 @@ class User < ApplicationRecord
 
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
-  has_and_belongs_to_many :interests
+
+  has_and_belongs_to_many :categories
 
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships
@@ -20,5 +21,15 @@ class User < ApplicationRecord
 
   def offline!
     update!(status: false)
+  end
+
+  def find_matches
+    User.joins(:categories)
+        .where(categories: { id: category_ids })
+        .where.not(id: id)
+        .group("users.id")
+        .having("COUNT(categories.id) >= 5")
+        .select("users.*, COUNT(categories.id) AS shared_categories_count")
+        .order("shared_categories_count DESC")
   end
 end
