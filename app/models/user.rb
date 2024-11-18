@@ -23,12 +23,22 @@ class User < ApplicationRecord
     update!(status: false)
   end
 
-  def find_matches
+  def perfect_matches
     User.joins(:categories)
         .where(categories: { id: category_ids })
         .where.not(id: id)
         .group("users.id")
-        .having("COUNT(categories.id) >= 5")
+        .having("COUNT(categories.id) >= 7")
+        .select("users.*, COUNT(categories.id) AS shared_categories_count")
+        .order("shared_categories_count DESC")
+  end
+
+  def potential_friends
+    User.joins(:categories)
+        .where(categories: { id: category_ids })
+        .where.not(id: id)
+        .group("users.id")
+        .having("COUNT(categories.id) BETWEEN 5 AND 6")
         .select("users.*, COUNT(categories.id) AS shared_categories_count")
         .order("shared_categories_count DESC")
   end

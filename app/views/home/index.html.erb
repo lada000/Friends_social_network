@@ -1,11 +1,33 @@
-<h1>Users with Matching Categories</h1>
+<h1>Matching Users</h1>
 
-<% if @matches.present? %>
-  <ul>
-    <% @matches.each do |match| %>
-      <li><%= match.name %> - Shared Categories: <%= match.shared_categories_count %></li>
-    <% end %>
-  </ul>
+<% if user_signed_in? %>
+  <h2>Perfect Matches</h2>
+  <% if @perfect_matches.any? %>
+    <ul>
+      <% @perfect_matches.each do |match| %>
+        <li>
+          <strong><%= match.name %></strong> - Shared Categories: <%= match.shared_categories_count %>
+          <%= link_to 'View Profile', profile_path(id: match.id) %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No perfect matches found.</p>
+  <% end %>
+
+  <h2>Potential Friends</h2>
+  <% if @potential_friends.any? %>
+    <ul>
+      <% @potential_friends.each do |friend| %>
+        <li>
+          <strong><%= friend.name %></strong> - Shared Categories: <%= friend.shared_categories_count %>
+          <%= link_to 'View Profile', profile_path(id: friend.id) %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No potential friends found.</p>
+  <% end %>
 <% else %>
-  <p>No matches found with 5 or more shared categories.</p>
+  <p>Please <%= link_to 'sign in', new_user_session_path %> to see matches.</p>
 <% end %>

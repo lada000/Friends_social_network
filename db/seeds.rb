@@ -1,13 +1,5 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
-# db/seeds.rb
+require 'faker'
+
 categories = [
   "Football", "Movies", "Music", "Travel", "Books",
   "Gaming", "Cooking", "Photography", "Art", "Fitness",
@@ -21,4 +13,24 @@ categories = [
 
 categories.each_with_index do |category_name, index|
   Category.upsert({ id: index + 1, name: category_name }, unique_by: :id)
+end
+
+categories = Category.all.to_a
+
+if categories.empty?
+  puts "No categories found. Run `rails db:seed` to create categories first."
+  exit
+end
+
+100.times do |i|
+  user = User.create!(
+    name: Faker::Name.name,
+    email: Faker::Internet.unique.email,
+    password: "password",
+    status: [true, false].sample, 
+    latitude: Faker::Address.latitude,
+    longitude: Faker::Address.longitude
+  )
+
+  user.categories << categories.sample(rand(5..10))
 end
