@@ -8,7 +8,17 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 # db/seeds.rb
+categories = [
+  "Football", "Movies", "Music", "Travel", "Books",
+  "Gaming", "Cooking", "Photography", "Art", "Fitness",
+  "Cycling", "Swimming", "Yoga", "Technology", "Science",
+  "History", "Nature", "Pets", "Dancing", "Running",
+  "Crafting", "Hiking", "Gardening", "Fishing", "Skiing",
+  "Snowboarding", "Martial Arts", "Theater", "Writing", "Languages",
+  "Fashion", "Astronomy", "Politics", "Economics", "Meditation",
+  "Health", "Comedy", "Podcasts", "DIY Projects", "Board Games"
+]
 
-30.times do |i|
-  Category.find_or_create_by(name: "Category #{i + 1}")
+categories.each_with_index do |category_name, index|
+  Category.upsert({ id: index + 1, name: category_name }, unique_by: :id)
 end
