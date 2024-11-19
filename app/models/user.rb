@@ -42,4 +42,8 @@ class User < ApplicationRecord
         .select("users.*, COUNT(categories.id) AS shared_categories_count")
         .order("shared_categories_count DESC")
   end
+
+  def self.update_offline_status
+    where("last_active_at < ?", 10.minutes.ago).update_all(status: false)
+  end
 end

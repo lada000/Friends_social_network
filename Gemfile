@@ -17,6 +17,7 @@ gem "bootsnap", require: false
 gem "google-maps"
 gem "geocoder"
 gem "faker"
+gem "whenever", require: false
 gem "hotwire-rails"
 
 group :development, :test do

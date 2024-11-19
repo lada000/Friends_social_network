@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   resource :profile, only: [:show, :edit, :update]
   
   get 'home/index'
+
+  post "/ping", to: "users#ping"
 end

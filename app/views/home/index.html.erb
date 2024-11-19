@@ -1,12 +1,19 @@
 <h1>Matching Users</h1>
 
 <% if user_signed_in? %>
-  <h2>Perfect Matches</h2>
+  <h2>Perfect Matches (7+ shared categories)</h2>
   <% if @perfect_matches.any? %>
     <ul>
       <% @perfect_matches.each do |match| %>
         <li>
           <strong><%= match.name %></strong> - Shared Categories: <%= match.shared_categories_count %>
+          <span>
+            <% if match.status %>
+              <span style="color: green;">● Online</span>
+            <% else %>
+              <span style="color: gray;">● Offline</span>
+            <% end %>
+          </span>
           <%= link_to 'View Profile', profile_path(id: match.id) %>
         </li>
       <% end %>
@@ -15,12 +22,19 @@
     <p>No perfect matches found.</p>
   <% end %>
 
-  <h2>Potential Friends</h2>
+  <h2>Potential Friends (5-6 shared categories)</h2>
   <% if @potential_friends.any? %>
     <ul>
       <% @potential_friends.each do |friend| %>
         <li>
           <strong><%= friend.name %></strong> - Shared Categories: <%= friend.shared_categories_count %>
+          <span>
+            <% if friend.status %>
+              <span style="color: green;">● Online</span>
+            <% else %>
+              <span style="color: gray;">● Offline</span>
+            <% end %>
+          </span>
           <%= link_to 'View Profile', profile_path(id: friend.id) %>
         </li>
       <% end %>
