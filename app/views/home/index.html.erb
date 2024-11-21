@@ -7,11 +7,16 @@
       <% @perfect_matches.each do |match| %>
         <li>
           <strong><%= match.name %></strong> - Shared Categories: <%= match.shared_categories_count %>
+          <% if current_user.friends.include?(match) %>
+            <span>Already friends</span>
+          <% else %>
+            <%= button_to "Add Friend", friendships_path(friend_id: match.id), method: :post %>
+          <% end %>
           <span>
             <% if match.status %>
-              <span style="color: green;">● Online</span>
+              <span style="color: green;">●</span>
             <% else %>
-              <span style="color: gray;">● Offline</span>
+              <span style="color: gray;">●</span>
             <% end %>
           </span>
           <%= link_to 'View Profile', profile_path(id: match.id) %>
@@ -30,9 +35,9 @@
           <strong><%= friend.name %></strong> - Shared Categories: <%= friend.shared_categories_count %>
           <span>
             <% if friend.status %>
-              <span style="color: green;">● Online</span>
+              <span style="color: green;">●</span>
             <% else %>
-              <span style="color: gray;">● Offline</span>
+              <span style="color: gray;">●</span>
             <% end %>
           </span>
           <%= link_to 'View Profile', profile_path(id: friend.id) %>

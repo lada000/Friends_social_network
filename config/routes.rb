@@ -10,4 +10,6 @@ Rails.application.routes.draw do
   get 'home/index'
 
   post "/ping", to: "users#ping"
+
+  resources :friendships, only: [:create, :update, :destroy]
 end
