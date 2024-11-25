@@ -10,10 +10,10 @@
 
 <h2>Your Friends</h2>
 <ul>
-  <% current_user.friends.each do |friend| %>
+  <% current_user.friendships.each do |friendship| %>
     <li>
-      <strong><%= friend.name %></strong>
-      <%= button_to "Remove Friend", friendship_path(friend), method: :delete %>
+      <strong><%= friendship.friend.name %></strong>
+      <%= button_to "Remove Friend", friendship_path(friendship), method: :delete, data: { confirm: "Are you sure you want to remove this friend?" } %>
     </li>
   <% end %>
 </ul>

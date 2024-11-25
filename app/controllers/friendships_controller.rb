@@ -23,7 +23,13 @@ class FriendshipsController < ApplicationController
 
   def destroy
     friendship = Friendship.find(params[:id])
-    friendship.destroy
-    redirect_to root_path, notice: "Friendship canceled"
+    inverse_friendship = Friendship.find_by(user: friendship.friend, friend: friendship.user)
+
+    Friendship.transaction do
+      friendship.destroy
+      inverse_friendship&.destroy
+    end
+
+    redirect_to profile_path, notice: "Friend removed successfully"
   end
 end
